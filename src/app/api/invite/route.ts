@@ -55,12 +55,12 @@ export async function POST(request: Request) {
 
     try {
       await resend.emails.send({
-        from: "SOP Creator <noreply@ops-mapper.com>",
+        from: "SOP Creator by Duvo <onboarding@resend.dev>",
         to: email,
         subject: `${senderName || "Your colleague"} documented "${processMap.title}" — your input needed`,
         html: `
           <div style="font-family: system-ui, sans-serif; max-width: 640px; margin: 0 auto;">
-            <div style="background: linear-gradient(135deg, #6d28d9 0%, #8b5cf6 100%); padding: 32px; border-radius: 12px 12px 0 0;">
+            <div style="background: linear-gradient(135deg, #2563EB 0%, #3B82F6 100%); padding: 32px; border-radius: 12px 12px 0 0;">
               <h1 style="color: white; margin: 0; font-size: 24px;">SOP Creator</h1>
               <p style="color: rgba(255,255,255,0.8); margin: 8px 0 0;">by Duvo.ai</p>
             </div>
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
               </p>
 
               <div style="text-align: center; margin: 32px 0;">
-                <a href="${resultUrl}" style="background: #6d28d9; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; display: inline-block;">
+                <a href="${resultUrl}" style="background: #2563EB; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; display: inline-block;">
                   Review & Refine Your Steps
                 </a>
               </div>
@@ -101,7 +101,7 @@ export async function POST(request: Request) {
               <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 32px 0;" />
 
               <p style="font-size: 14px; color: #94a3b8; text-align: center;">
-                Powered by <a href="https://duvo.ai" style="color: #6d28d9;">Duvo.ai</a> — Automate your operational workflows
+                Powered by <a href="https://duvo.ai" style="color: #2563EB;">Duvo.ai</a> — Automate your operational workflows
               </p>
             </div>
           </div>

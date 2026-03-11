@@ -1,8 +1,7 @@
 import { Resend } from "resend";
-import { getProcessMap } from "@/lib/store";
 
 export async function POST(request: Request) {
-  const { processMapId, stakeholders, senderName } = await request.json();
+  const { processMap, stakeholders, senderName } = await request.json();
 
   if (!process.env.RESEND_API_KEY) {
     return Response.json(
@@ -13,16 +12,11 @@ export async function POST(request: Request) {
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  if (!processMapId || !stakeholders || !Array.isArray(stakeholders)) {
+  if (!processMap || !stakeholders || !Array.isArray(stakeholders)) {
     return Response.json({ error: "Missing required fields" }, { status: 400 });
   }
 
-  const processMap = getProcessMap(processMapId);
-  if (!processMap) {
-    return Response.json({ error: "Process map not found" }, { status: 404 });
-  }
-
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://ops-mapper.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://sop-generator.vercel.app";
   const results = [];
 
   for (const stakeholder of stakeholders) {
@@ -51,7 +45,7 @@ export async function POST(request: Request) {
       .join("");
 
     const totalMinutes = relevantSteps.reduce((sum, s) => sum + s.estimatedMinutes, 0);
-    const resultUrl = `${baseUrl}/result/${processMapId}?role=${encodeURIComponent(role)}`;
+    const resultUrl = `${baseUrl}/result/${processMap.id}?role=${encodeURIComponent(role)}`;
 
     try {
       await resend.emails.send({

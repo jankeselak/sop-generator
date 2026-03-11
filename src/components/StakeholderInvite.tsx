@@ -53,7 +53,7 @@ export default function StakeholderInvite({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          processMapId: processMap.id,
+          processMap,
           stakeholders: [{ role, name, email }],
           senderName,
         }),

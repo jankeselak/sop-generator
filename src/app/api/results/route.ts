@@ -9,7 +9,7 @@ export async function GET(request: Request) {
     return Response.json({ error: "Missing id parameter" }, { status: 400 });
   }
 
-  const processMap = getProcessMap(id);
+  const processMap = await getProcessMap(id);
 
   if (!processMap) {
     return Response.json({ error: "Process map not found" }, { status: 404 });
@@ -25,6 +25,6 @@ export async function PUT(request: Request) {
     return Response.json({ error: "Missing id" }, { status: 400 });
   }
 
-  saveProcessMap(body);
+  await saveProcessMap(body);
   return Response.json({ success: true });
 }

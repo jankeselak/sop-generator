@@ -65,7 +65,7 @@ export async function POST(request: Request) {
             })
           );
 
-          saveProcessMap(processMap);
+          await saveProcessMap(processMap);
 
           controller.enqueue(
             new TextEncoder().encode(

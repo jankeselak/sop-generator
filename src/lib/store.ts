@@ -1,17 +1,24 @@
+import { kv } from "@vercel/kv";
 import { ProcessMap } from "./types";
 
-// Simple in-memory store for the demo
-// In production, this would be a database (Supabase, etc.)
-const store = new Map<string, ProcessMap>();
+// In-memory fallback for local development (when KV isn't configured)
+const memoryStore = new Map<string, ProcessMap>();
+const useKV = !!process.env.KV_REST_API_URL;
 
-export function saveProcessMap(map: ProcessMap): void {
-  store.set(map.id, map);
+export async function saveProcessMap(map: ProcessMap): Promise<void> {
+  if (useKV) {
+    await kv.set(`sop:${map.id}`, JSON.stringify(map), { ex: 60 * 60 * 24 * 7 }); // 7 day TTL
+  } else {
+    memoryStore.set(map.id, map);
+  }
 }
 
-export function getProcessMap(id: string): ProcessMap | undefined {
-  return store.get(id);
-}
-
-export function getAllProcessMaps(): ProcessMap[] {
-  return Array.from(store.values());
+export async function getProcessMap(id: string): Promise<ProcessMap | undefined> {
+  if (useKV) {
+    const data = await kv.get<string>(`sop:${id}`);
+    if (!data) return undefined;
+    return typeof data === "string" ? JSON.parse(data) : data as unknown as ProcessMap;
+  } else {
+    return memoryStore.get(id);
+  }
 }

@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       })
     );
 
-    saveProcessMap(updatedMap);
+    await saveProcessMap(updatedMap);
     return Response.json(updatedMap);
   } catch (error) {
     const message =

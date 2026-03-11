@@ -1,7 +1,8 @@
 import { Resend } from "resend";
+import { ProcessMap } from "@/lib/types";
 
 export async function POST(request: Request) {
-  const { processMap, stakeholders, senderName } = await request.json();
+  const { processMap, stakeholders, senderName }: { processMap: ProcessMap; stakeholders: { role: string; name: string; email: string }[]; senderName?: string } = await request.json();
 
   if (!process.env.RESEND_API_KEY) {
     return Response.json(
